@@ -31,3 +31,8 @@
 - Final nine-size/nine-language matrix passed 3350 assertions. Glass previews
   are different captured states, not a CSS filter on one screenshot. Versioned
   asset URLs avoid mixing the new page with cached scripts and old captures.
+- Implementation commit: 93957dc. GitHub remote main remained 0a84bcd after
+  push: Git Credential Manager requires fresh authentication, and the connected
+  GitHub tool was unavailable. Cancelled the owned waiting Git processes; a
+  noninteractive retry confirmed missing authentication. No public deployment
+  completed. Do not claim the public URL contains this redesign yet.
