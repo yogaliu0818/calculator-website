@@ -36,27 +36,27 @@
   function updateText(){document.querySelectorAll('[data-copy]').forEach(element=>{element.textContent=translate(element.dataset.copy);});fitHeadings();}
   function updateImages(){
     document.querySelectorAll('img[data-shot]').forEach(img=>{
-      const next=`assets/${current}/${img.dataset.shot}.png?v=20261025b`;
+      const next=`assets/${current}/${img.dataset.shot}.png?v=20261025c`;
       if(img.getAttribute('src')!==next){
         img.classList.remove('shot-changing');
         img.onload=()=>{img.classList.remove('shot-changing');requestAnimationFrame(()=>img.classList.add('shot-changing'));};
         img.src=next;
       }
       if(!img.closest('[aria-hidden="true"]')){
-        const names={'classic-glass':'Liquid Glass','smoked-glass':'Liquid Glass','pearl-glass':'Liquid Glass',smoked:'Smoked',pearl:'Pearl',scientific:'Scientific calculator','scientific-glass':'Scientific calculator','tablet-portrait':'Portrait','tablet-landscape':'Landscape','story-edit':'Select the number.','story-result':'Keep the answer clear.','story-history':'Pick up where you left off.'};
+        const names={'classic-glass':'Liquid Glass','smoked-glass':'Liquid Glass','pearl-glass':'Liquid Glass',smoked:'Smoked',pearl:'Pearl',scientific:'Scientific calculator','scientific-glass':'Scientific calculator','tablet-portrait':'Portrait','tablet-landscape':'Landscape','story-edit':'Select the number.','story-result':'Keep the answer clear.','story-history':'Pick up where you left off.','conversion-detail':'Different units. One place.','explore-detail':'Explore the possibilities'};
         img.alt=translate(names[img.dataset.shot]||(img.dataset.shot.includes('-keys')?'Appearance':features[img.dataset.shot]?.[0])||'Calculator');
       }
     });
-    document.querySelectorAll('source[data-source-shot]').forEach(source=>{source.srcset=`assets/${current}/${source.dataset.sourceShot}.png?v=20261025b`;});
+    document.querySelectorAll('source[data-source-shot]').forEach(source=>{source.srcset=`assets/${current}/${source.dataset.sourceShot}.png?v=20261025c`;});
   }
-  function setLanguage(value){
+  function setLanguage(value,persist=false){
     current=value==='zh'?'zh-Hant':Object.hasOwn(languages,value)?value:'en';document.documentElement.lang=current;updateText();updateImages();language.value=current;
     document.title=translate('Calculator');document.querySelector('meta[name="description"]').content=translate(siteKeys[9]);
     document.querySelector('meta[property="og:title"]').content=translate('Calculator');document.querySelector('meta[property="og:description"]').content=translate(siteKeys[4]);
     document.querySelector('meta[property="og:image"]').content=`https://yogaliu0818.github.io/calculator-website/assets/${current}/scientific-glass.png`;
     language.setAttribute('aria-label',translate('Language'));document.querySelectorAll('nav,.product-facts').forEach(e=>e.setAttribute('aria-label',translate('Calculator')));
     document.querySelectorAll('[role="tablist"]').forEach(e=>e.setAttribute('aria-label',translate('Features')));document.querySelector('.theme-options').setAttribute('aria-label',translate('Appearance'));
-    try{localStorage.setItem('site-language',current);}catch{}
+    if(persist)try{localStorage.setItem('site-language',current);}catch{}
   }
   function selectFeature(button,focus=false){
     const feature=button.dataset.feature;
@@ -94,8 +94,23 @@
     });
   });
   document.querySelectorAll('[data-theme]').forEach(button=>button.addEventListener('click',()=>{theme=button.dataset.theme;updateAppearance();}));
-  document.querySelector('#glass-toggle').addEventListener('change',updateAppearance);language.addEventListener('change',()=>setLanguage(language.value));
-  let saved='en';try{saved=localStorage.getItem('site-language')||'en';}catch{}setLanguage(saved);
+  document.querySelector('#glass-toggle').addEventListener('change',updateAppearance);language.addEventListener('change',()=>setLanguage(language.value,true));
+  function preferredLanguage(){
+    for(const tag of navigator.languages?.length?navigator.languages:[navigator.language]){
+      const normalized=String(tag||'').toLowerCase().replaceAll('_','-');
+      if(normalized==='zh'||normalized.startsWith('zh-')){
+        if(/(?:^|-)hans(?:-|$)/.test(normalized))return 'zh-Hans';
+        return /(?:^|-)hant(?:-|$)|(?:^|-)(?:tw|hk|mo)(?:-|$)/.test(normalized)?'zh-Hant':'zh-Hans';
+      }
+      const base=normalized.split('-')[0];
+      if(base==='pt')return 'pt-BR';
+      if(Object.hasOwn(languages,base))return base;
+    }
+    return 'en';
+  }
+  let saved=null;try{saved=localStorage.getItem('site-language');}catch{}
+  const validSaved=saved==='zh'||Object.hasOwn(languages,saved);
+  setLanguage(validSaved?saved:preferredLanguage(),saved==='zh');
   let lastWidth=0;
   new ResizeObserver(entries=>{const width=entries[0].contentRect.width;if(width!==lastWidth){lastWidth=width;fitHeadings();}}).observe(document.body);
 })();

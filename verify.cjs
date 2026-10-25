@@ -10,7 +10,7 @@ const output=path.resolve(__dirname,'../apple_calculator_apk/test-artifacts/webs
   async function decoded(page){await page.evaluate(async()=>{for(const img of document.images){img.loading='eager';await img.decode();}await Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})));});}
   try{
     for(const [width,height]of [[320,568],[390,844],[600,960],[960,600],[800,1280],[1280,800],[1440,900],[1920,1080],[852,393]]){
-      const page=await browser.newPage({viewport:{width,height}}),errors=[];
+      const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce'}),errors=[];
       page.on('pageerror',e=>errors.push(e.message));
       await page.goto(pathToFileURL(path.join(__dirname,'index.html')).href);
       for(const lang of locales){
@@ -74,7 +74,7 @@ const output=path.resolve(__dirname,'../apple_calculator_apk/test-artifacts/webs
     assert.equal(await reduced.locator('.download').first().evaluate(e=>getComputedStyle(e).transitionDuration),'0s');checks+=2;await reduced.close();
     // Legacy preferences and rejected storage access must not prevent rendering.
     for(const mode of ['legacy','blocked']){
-      const page=await browser.newPage();
+      const page=await browser.newPage({locale:'en-US'});
       await page.addInitScript(mode=>{if(mode==='legacy')localStorage.setItem('site-language','zh');else{Storage.prototype.getItem=()=>{throw Error('blocked')};Storage.prototype.setItem=()=>{throw Error('blocked')};}},mode);
       await page.goto(pathToFileURL(path.join(__dirname,'index.html')).href);
       assert.equal(await page.locator('html').getAttribute('lang'),mode==='legacy'?'zh-Hant':'en');checks++;await page.close();

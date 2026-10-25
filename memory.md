@@ -70,3 +70,25 @@
   13 assertions without JS/HTTP errors. Extra breakpoint matrix passed 126.
 - Public URL now serves this studio redesign. Older authentication-blocked
   entries above are historical, not the current publication status.
+
+## 2026-10-25: Screenshot Containment And Automatic Language
+
+- User-visible hero clipping escaped the previous container-only checks. Removed
+  fixed image heights, negative offsets and clip-path masks. Use object-fit:
+  contain; portrait uses a real focus capture with expression, result and all
+  five keypad rows. Landscape uses the complete scientific keyboard. Story and
+  feature screenshots also retain their full height.
+- Scientific, conversion and Explore now have dedicated explanations and real
+  localized screenshots. Added four editorial keys (35 total) in nine languages.
+  capture-sections.cjs creates three images per locale without changing App code.
+- Automatic language uses browser language preferences, not IP: supported-region
+  variants are normalized, explicit Chinese scripts win over region, unsupported
+  languages fall back to English. Manual selection wins and persists. Automatic
+  selection is not stored as if manually chosen; legacy zh remains Traditional.
+- No external IP/geolocation/translation request is made. Language regression
+  audit passed 116 checks including blocked storage and manual-choice reload.
+- Full regression explicitly sets en-US for its blocked-storage fallback case;
+  machine browser language is not guaranteed to be English anymore.
+- Final full matrix passed 5710 assertions; painted-media audit passed 1638
+  assertions across 14 sizes and nine locales. Phone Explore and tablet conversion
+  captures were visually inspected. Current cache suffix is 20261025c.

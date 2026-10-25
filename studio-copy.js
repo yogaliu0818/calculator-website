@@ -17,7 +17,7 @@ window.studioKeys=[
   'Made for Android.'
 ];
 window.studioCopy={
-en:window.studioKeys,
+en:[...window.studioKeys],
 'zh-Hant':[
   '常見問題','下載','前往 Google Play','真實畫面，細節呈現。',
   '換算工具','介面語言','完整主題','無廣告','無訂閱',
@@ -162,3 +162,22 @@ es:[
   'O histórico, os favoritos e as configurações ficam nos dados locais do app. Não há sincronização em nuvem por conta. Consulte a política de privacidade para detalhes.',
   'Feita para Android.'
 ]};
+const sectionKeys=[
+  'Parentheses, powers, roots and logarithms. Trigonometry, DEG/RAD and memory functions.',
+  'From length and temperature to fuel economy, pressure, torque and energy.',
+  'More than an answer.',
+  'Change a value, see the diagram update, solve backwards or compare three scenarios.'
+];
+const sectionCopy={
+  en:sectionKeys,
+  'zh-Hant':['括號、次方、開根號、對數，還有三角函數、DEG／RAD 與記憶功能。','從長度、溫度，到油耗、壓力、力矩與能量。','不只是得到答案。','修改數值、看圖形即時變動，也能反向求解，或比較三種情境。'],
+  'zh-Hans':['括号、乘方、开方、对数，还有三角函数、DEG／RAD 与记忆功能。','从长度、温度，到油耗、压力、力矩与能量。','不只是得到答案。','修改数值、看图形实时变化，也能反向求解，或比较三种情景。'],
+  ja:['括弧、累乗、累乗根、対数。三角関数、DEG／RAD、メモリー機能も。','長さ、温度から、燃費、圧力、トルク、エネルギーまで。','答えを出す、その先へ。','数値を変えて図の変化を確認。逆算や3つの条件の比較もできます。'],
+  ko:['괄호, 거듭제곱, 제곱근, 로그와 삼각함수, DEG/RAD, 메모리 기능까지.','길이와 온도부터 연비, 압력, 토크, 에너지까지.','답에서 한 걸음 더.','값을 바꾸고 도형의 변화를 확인하세요. 역산하거나 세 가지 조건을 비교할 수도 있습니다.'],
+  fr:['Parenthèses, puissances, racines et logarithmes. Trigonométrie, DEG/RAD et mémoire.','De la longueur et la température à la consommation, la pression, le couple et l’énergie.','Plus qu’un résultat.','Modifiez une valeur et observez le diagramme, calculez à rebours ou comparez trois scénarios.'],
+  de:['Klammern, Potenzen, Wurzeln und Logarithmen. Trigonometrie, DEG/RAD und Speicherfunktionen.','Von Länge und Temperatur bis Verbrauch, Druck, Drehmoment und Energie.','Mehr als ein Ergebnis.','Werte ändern, Diagramme beobachten, rückwärts rechnen oder drei Szenarien vergleichen.'],
+  es:['Paréntesis, potencias, raíces y logaritmos. Trigonometría, DEG/RAD y memoria.','De longitud y temperatura a consumo, presión, par y energía.','Más que un resultado.','Cambia un valor, observa el diagrama, calcula a la inversa o compara tres escenarios.'],
+  'pt-BR':['Parênteses, potências, raízes e logaritmos. Trigonometria, DEG/RAD e memória.','De comprimento e temperatura a consumo, pressão, torque e energia.','Mais que um resultado.','Altere um valor e veja o diagrama mudar, calcule ao contrário ou compare três cenários.']
+};
+window.studioKeys.push(...sectionKeys);
+for(const [language,values]of Object.entries(sectionCopy))window.studioCopy[language].push(...values);
