@@ -11,6 +11,10 @@
     if(values.length!==extraKeys.length)throw new Error(`Incomplete extras: ${lang}`);
     Object.assign(catalogs[lang],Object.fromEntries(extraKeys.map((key,i)=>[key,values[i]])));
   }
+  for(const [lang,values]of Object.entries(studioCopy)){
+    if(values.length!==studioKeys.length)throw new Error(`Incomplete studio copy: ${lang}`);
+    Object.assign(catalogs[lang],Object.fromEntries(studioKeys.map((key,i)=>[key,values[i]])));
+  }
   language.replaceChildren(...Object.entries(languages).map(([value,label])=>new Option(label,value)));
   const features={calculator:['A focused calculator','Editable expressions, scientific functions, and clear error explanations.'],history:['History worth keeping','Review, copy, revise, and reuse previous calculations.'],explore:['Explore the possibilities','Interactive formulas, reverse calculations, and scenario comparisons.'],converters:['Different units. One place.','Convert length, area, weight, temperature, energy, pressure, and more. Currency conversion keeps saved rates available offline.']};
   let current='en',theme='classic';
@@ -21,7 +25,10 @@
     document.querySelectorAll('h1,h2,h3').forEach(element=>{
       element.style.fontSize='';const style=getComputedStyle(element);
       textMeasure.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-      const words=element.tagName==='H1'?[element.textContent]:element.textContent.split(/\s+/);
+      const words=element.tagName==='H1'?[element.textContent]
+        :typeof Intl.Segmenter==='function'?[...new Intl.Segmenter(current,{granularity:'word'}).segment(element.textContent)].filter(part=>part.isWordLike).map(part=>part.segment)
+        :element.textContent.split(/\s+/);
+      if(!words.length)return;
       const widest=Math.max(...words.map(word=>textMeasure.measureText(word).width));
       if(widest>element.clientWidth)element.style.fontSize=`${Math.floor(parseFloat(style.fontSize)*(element.clientWidth-2)/widest)}px`;
     });
@@ -29,20 +36,26 @@
   function updateText(){document.querySelectorAll('[data-copy]').forEach(element=>{element.textContent=translate(element.dataset.copy);});fitHeadings();}
   function updateImages(){
     document.querySelectorAll('img[data-shot]').forEach(img=>{
-      const next=`assets/${current}/${img.dataset.shot}.png?v=20261025`;if(img.getAttribute('src')!==next)img.src=next;
+      const next=`assets/${current}/${img.dataset.shot}.png?v=20261025b`;
+      if(img.getAttribute('src')!==next){
+        img.classList.remove('shot-changing');
+        img.onload=()=>{img.classList.remove('shot-changing');requestAnimationFrame(()=>img.classList.add('shot-changing'));};
+        img.src=next;
+      }
       if(!img.closest('[aria-hidden="true"]')){
-        const names={'classic-glass':'Liquid Glass','smoked-glass':'Liquid Glass','pearl-glass':'Liquid Glass',smoked:'Smoked',pearl:'Pearl',scientific:'Scientific calculator','tablet-portrait':'Portrait','tablet-landscape':'Landscape'};
-        img.alt=translate(names[img.dataset.shot]||features[img.dataset.shot]?.[0]||'Calculator');
+        const names={'classic-glass':'Liquid Glass','smoked-glass':'Liquid Glass','pearl-glass':'Liquid Glass',smoked:'Smoked',pearl:'Pearl',scientific:'Scientific calculator','scientific-glass':'Scientific calculator','tablet-portrait':'Portrait','tablet-landscape':'Landscape','story-edit':'Select the number.','story-result':'Keep the answer clear.','story-history':'Pick up where you left off.'};
+        img.alt=translate(names[img.dataset.shot]||(img.dataset.shot.includes('-keys')?'Appearance':features[img.dataset.shot]?.[0])||'Calculator');
       }
     });
+    document.querySelectorAll('source[data-source-shot]').forEach(source=>{source.srcset=`assets/${current}/${source.dataset.sourceShot}.png?v=20261025b`;});
   }
   function setLanguage(value){
     current=value==='zh'?'zh-Hant':Object.hasOwn(languages,value)?value:'en';document.documentElement.lang=current;updateText();updateImages();language.value=current;
     document.title=translate('Calculator');document.querySelector('meta[name="description"]').content=translate(siteKeys[9]);
     document.querySelector('meta[property="og:title"]').content=translate('Calculator');document.querySelector('meta[property="og:description"]').content=translate(siteKeys[4]);
-    document.querySelector('meta[property="og:image"]').content=`https://yogaliu0818.github.io/calculator-website/assets/${current}/scientific.png`;
-    language.setAttribute('aria-label',translate('Language'));document.querySelector('nav').setAttribute('aria-label',translate('Calculator'));
-    document.querySelector('[role="tablist"]').setAttribute('aria-label',translate('Features'));document.querySelector('.theme-options').setAttribute('aria-label',translate('Appearance'));
+    document.querySelector('meta[property="og:image"]').content=`https://yogaliu0818.github.io/calculator-website/assets/${current}/scientific-glass.png`;
+    language.setAttribute('aria-label',translate('Language'));document.querySelectorAll('nav,.product-facts').forEach(e=>e.setAttribute('aria-label',translate('Calculator')));
+    document.querySelectorAll('[role="tablist"]').forEach(e=>e.setAttribute('aria-label',translate('Features')));document.querySelector('.theme-options').setAttribute('aria-label',translate('Appearance'));
     try{localStorage.setItem('site-language',current);}catch{}
   }
   function selectFeature(button,focus=false){
@@ -56,6 +69,7 @@
   function updateAppearance(){
     const glass=document.querySelector('#glass-toggle').checked;
     document.querySelector('#appearance-image').dataset.shot=glass?`${theme}-glass`:theme==='classic'?'calculator':theme;
+    document.querySelector('#material-image').dataset.shot=`${theme}-keys${glass?'-glass':''}`;
     document.querySelector('.material-stage').dataset.previewTheme=theme;document.querySelector('#preview-theme-label').dataset.copy={classic:'Classic',smoked:'Smoked',pearl:'Pearl'}[theme];
     document.querySelector('#glass-status').dataset.copy=glass?'Glass on':'Glass off';document.querySelectorAll('[data-theme]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.theme===theme)));updateText();updateImages();
   }
@@ -63,6 +77,20 @@
     button.addEventListener('click',()=>selectFeature(button));button.addEventListener('keydown',event=>{
       const tabs=[...document.querySelectorAll('[data-feature]')],i=tabs.indexOf(button),next={ArrowRight:(i+1)%tabs.length,ArrowLeft:(i+tabs.length-1)%tabs.length,Home:0,End:tabs.length-1}[event.key];
       if(next!==undefined){event.preventDefault();selectFeature(tabs[next],true);}
+    });
+  });
+  document.querySelectorAll('[data-story]').forEach(button=>{
+    function select(){
+      document.querySelectorAll('[data-story]').forEach(item=>{const active=item===button;item.setAttribute('aria-selected',String(active));item.tabIndex=active?0:-1;});
+      document.querySelector('#story-panel').setAttribute('aria-labelledby',button.id);
+      document.querySelector('#story-image').dataset.shot=`story-${button.dataset.story}`;
+      document.querySelector('.story-equation').hidden=button.dataset.story!=='edit';updateImages();
+    }
+    button.addEventListener('click',select);
+    button.addEventListener('keydown',event=>{
+      const tabs=[...document.querySelectorAll('[data-story]')],i=tabs.indexOf(button);
+      const next={ArrowDown:(i+1)%tabs.length,ArrowUp:(i+tabs.length-1)%tabs.length,Home:0,End:tabs.length-1}[event.key];
+      if(next!==undefined){event.preventDefault();tabs[next].click();tabs[next].focus();}
     });
   });
   document.querySelectorAll('[data-theme]').forEach(button=>button.addEventListener('click',()=>{theme=button.dataset.theme;updateAppearance();}));

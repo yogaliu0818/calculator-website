@@ -10,13 +10,16 @@ The Android App is maintained separately in `../apple_calculator_apk/www`.
 
 ## Architecture
 
-- `index.html`: product presentation, feature tabs, scientific mode, three-theme
-  preview, glass switch, tablet showcase and Play download links.
+- `index.html`: single-product hero, three-step expression-editing story,
+  feature tabs, scientific mode, three-theme material close-up, tablet showcase,
+  native FAQ disclosures, complete footer and Play download links.
 - `style.css`: light editorial sections and a dark material showcase. Keep
   sections unframed, screenshots proportional and mobile text unclipped.
 - `translations.js`: shared existing catalogs plus explicit nine-language
   supplemental strings. Keep visible text, accessibility labels and screenshots
   in the same language; migrate the old `zh` preference to `zh-Hant`.
+- `studio-copy.js`: nine-language editorial, story and FAQ catalogs. Every
+  locale must cover every key; no silent English fallback for visible copy.
 - `site.js`: presentation-only tabs and image selection. No calculator engine,
   app data or hidden network integration. Long translated words fit their heading
   container rather than breaking the product name or using viewport font scaling.
@@ -38,11 +41,20 @@ node verify.cjs
 closes its server/browser. It only changes isolated browser-local preferences.
 These are real web-UI renders, not proof of installation or native-device testing.
 
+`node capture-details.cjs` additionally captures real inline number selection,
+correction (245 x 1.08 -> 250 x 1.08 = 270), resulting history, six theme/keypad
+details and a scientific glass hero in each language. It uses a 2x pixel density,
+not AI-generated screens, visual filters or manipulated calculation results.
+
 `verify.cjs` checks nine phone/tablet/desktop viewports, nine languages, all
 feature tabs, all six theme/glass combinations, image decoding, localized alt
 text, header/hero bounds, long titles, keyboard tab navigation, persisted language,
 legacy preference migration and blocked-storage fallback. Screenshots/reports go
-outside this repository to `../apple_calculator_apk/test-artifacts/website-20261025`.
+outside this repository to `../apple_calculator_apk/test-artifacts/website-studio-20261025`.
+
+The current matrix additionally checks story controls, all FAQ open/close states,
+keyboard story selection and reduced-motion behavior. The site stays buildless
+and works through file://; no always-running development server is required.
 
 After verification, commit/push only this website repository. Confirm deployed
 HTML and assets match the commit before calling the public update complete.

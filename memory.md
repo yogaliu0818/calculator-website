@@ -36,3 +36,31 @@
   GitHub tool was unavailable. Cancelled the owned waiting Git processes; a
   noninteractive retry confirmed missing authentication. No public deployment
   completed. Do not claim the public URL contains this redesign yet.
+
+## 2026-10-25: Studio-Level Product Presentation
+
+- User approved direction A and explicitly asked to continue. Replaced the
+  three-screenshot hero with one full-bleed real App product scene, responsive
+  desktop/scientific and phone views. No fabricated features, ratings or users.
+- The editing story captures actual selection of 245, correction to 250 and
+  250 x 1.08 = 270, followed by real history. Three steps support keyboard input.
+  Feature tabs, theme/glass controls and tablet views remain available.
+- Material close-ups show actual keypad captures for six theme/glass states.
+  `capture-details.cjs` creates 11 images per language at 2x pixel density,
+  including consistent mobile/landscape heroes. App code/data is unchanged.
+- Added native FAQ disclosures, grouped footer, skip link, local Lucide icons,
+  reduced-motion-safe transitions and truthful SoftwareApplication metadata.
+  `studio-copy.js` covers all 31 new strings in all nine languages.
+- Heading fitting uses word segmentation so Chinese/Japanese can wrap naturally
+  while long Western words fit without clipping. Mobile hero hides the clipped
+  top icon; its footnote is hidden so it cannot overlap the visible keypad.
+- Expanded browser matrix: 5710 assertions passed across nine languages and
+  nine viewports, including all story/theme/FAQ states and keyboard controls.
+  Twenty-seven material on/off pairs were checked for actual pixel differences.
+- QA artifacts: ../apple_calculator_apk/test-artifacts/website-studio-20261025/.
+  Public publishing status is separate; GitHub authentication was previously
+  unavailable. Keep the existing repository/Pages URL rather than duplicating it.
+- Final source smoke passed another 148 checks across four sizes and all nine
+  languages after the responsive hero update. Native FAQ Enter toggling and
+  matching localized picture sources were checked; final phone/tablet/desktop
+  screenshots were visually inspected. No servers are left running.
