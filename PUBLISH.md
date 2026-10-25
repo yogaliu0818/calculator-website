@@ -1,11 +1,12 @@
 # Publication Status
 
-2026-10-25: studio redesign deployed successfully.
+2026-10-25: responsive-media and automatic-language update deployed successfully.
 
-GitHub authentication succeeded on the latest noninteractive retry. Commit
-8d592be was pushed to main. Pages workflow 40179345241 completed successfully.
-Public HTML, CSS, JavaScript and sampled localized images match local SHA-256
-hashes. The deployed site also passed 13 live-browser interaction checks.
+Implementation commit 9ec7840 was pushed to main. Pages workflow 40180799239
+completed successfully. Public HTML/CSS/JS match normalized source SHA-256 hashes
+(ignoring checkout line endings); sampled localized PNG hashes match exactly.
+The deployed site passed 60 live checks, including automatic browser language,
+manual-choice persistence and localized conversion/Explore content.
 No password/token is stored in this project.
 
 For future updates, after local verification and committing the website, run:
@@ -15,12 +16,13 @@ git -C "D:\codex\網站製作\calculator-website" push origin main
 ```
 
 Then verify the GitHub Pages build succeeds and the public page has the
-editing story, material close-up, three themes, Liquid Glass switch and FAQ:
+editing story, dedicated science/conversion/Explore sections, material close-up,
+three themes, Liquid Glass switch, automatic language selection and FAQ:
 
 https://yogaliu0818.github.io/calculator-website/
 
 For local preview, open index.html. No dependency install or server is needed.
 
-Verification: 5710 full-matrix checks, 148 final source smoke checks, 126 extra
-breakpoint checks and 27 distinct material image pairs. This is website/browser
+Current verification: 5710 full-matrix checks, 1638 media/breakpoint checks,
+116 language-detection checks and 60 public-site checks. This is website/browser
 verification, not Android release or physical-device testing.

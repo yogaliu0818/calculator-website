@@ -92,3 +92,6 @@
 - Final full matrix passed 5710 assertions; painted-media audit passed 1638
   assertions across 14 sizes and nine locales. Phone Explore and tablet conversion
   captures were visually inspected. Current cache suffix is 20261025c.
+- Implementation 9ec7840 deployed successfully in Pages workflow 40180799239.
+  Live verification passed 60 checks; normalized text-source hashes and exact
+  sampled PNG hashes match. Public language detection/manual persistence tested.

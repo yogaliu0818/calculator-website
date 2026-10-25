@@ -70,3 +70,5 @@ and works through file://; no always-running development server is required.
 
 After verification, commit/push only this website repository. Confirm deployed
 HTML and assets match the commit before calling the public update complete.
+`node verify-live.cjs` checks normalized source hashes, sampled image hashes and
+automatic/manual language selection on the existing public GitHub Pages site.
