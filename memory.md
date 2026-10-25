@@ -148,3 +148,5 @@
 - Tests passed: 401 download assertions including seven actual browser downloads
   and hash comparison, 5953 existing regression checks, 1638 media checks.
   Phone/desktop hero screenshots inspected. Cache version is 20261025e.
+- Published implementation 95ac4b4; Pages workflow 40183011905 succeeded. All 88
+  live checks passed; public source, PNG/WebP and APK hashes match local files.
