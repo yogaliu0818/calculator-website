@@ -125,3 +125,6 @@
   product-proof assertions, 1638 painted-media assertions and 116 automatic
   language assertions. Phone hero/dialog and phone/tablet feature sections were
   visually inspected. Cache suffix for this candidate is 20261025d.
+- Published implementation db47ea4; Pages workflow 40182367388 succeeded. Public
+  source/image hashes match and all 76 live browser checks passed. No Android
+  binary, app version or native feature was changed by this website update.

@@ -24,10 +24,19 @@ const hash=buffer=>crypto.createHash('sha256').update(buffer).digest('hex');
       assert.equal(await page.evaluate(()=>localStorage.getItem('site-language')),null);checks+=3;
       for(const id of ['conversion','explore']){
         assert((await page.locator('#'+id+' h2').textContent()).trim());
-        assert((await page.locator('#'+id+' img').getAttribute('src')).includes('/'+expected+'/'));checks+=2;
+        assert((await page.locator('#'+id+' .app-screen').getAttribute('src')).includes('/'+expected+'/'));checks+=2;
       }
       await page.selectOption('#language','ja');await page.reload();
       assert.equal(await page.locator('html').getAttribute('lang'),'ja');
+      await page.waitForFunction(()=>document.querySelector('#hero-image').dataset.ready==='true');
+      assert((await page.locator('#hero-image').getAttribute('src')).includes('/ja/demo-'));
+      await page.locator('[data-demo-step="2"]').click();
+      await page.waitForFunction(()=>document.querySelector('#hero-image').dataset.ready==='true');
+      assert((await page.locator('#demo-equation').textContent()).includes('270'));
+      await page.locator('[data-preview-target="conversion-image"]').click();
+      await page.locator('#preview-image').evaluate(image=>image.decode());
+      assert(await page.locator('#screen-preview').evaluate(e=>e.open));
+      await page.keyboard.press('Escape');assert.equal(await page.locator('#screen-preview').evaluate(e=>e.open),false);checks+=4;
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
       assert.deepEqual(errors,[]);assert.deepEqual(external,[]);checks+=4;
       await context.close();
