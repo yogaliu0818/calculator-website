@@ -196,3 +196,18 @@ const proofCopy={
 };
 window.studioKeys.push(...proofKeys);
 for(const [language,values]of Object.entries(proofCopy))window.studioCopy[language].push(...values);
+
+const downloadKeys=['Download early access','APK installation notes','This is a developer-signed APK, version 1.0.8 (9), for Android 7.0 or later. Android may ask you to allow installation from your browser. It uses the same package as Google Play, but different signing certificates can prevent an update. If that happens, keep your Play installation and wait for its update; uninstalling can delete local history and settings.'];
+const downloadCopy={
+  en:[...downloadKeys],
+  'zh-Hant':['下載搶先體驗版','APK 安裝說明','這是開發者簽署的 APK，版本 1.0.8（9），支援 Android 7.0 以上。Android 可能要求允許瀏覽器安裝應用程式。它與 Google Play 版使用相同套件名稱，但簽章不同時無法直接更新。若遇到此情況，請保留商店版並等待更新；移除 App 可能刪除本機歷史紀錄與設定。'],
+  'zh-Hans':['下载抢先体验版','APK 安装说明','这是开发者签名的 APK，版本 1.0.8（9），支持 Android 7.0 及以上。Android 可能要求允许浏览器安装应用。它与 Google Play 版使用相同包名，但签名不同时无法直接更新。如果遇到这种情况，请保留商店版并等待更新；卸载可能删除本地历史记录和设置。'],
+  ja:['先行体験版をダウンロード','APK のインストールについて','開発者が署名した APK、バージョン 1.0.8（9）です。Android 7.0 以降に対応しています。ブラウザーからのインストール許可を求められる場合があります。Google Play 版と同じパッケージ名ですが、署名が異なると更新できません。その場合は Play 版を残して更新をお待ちください。アンインストールすると端末内の履歴や設定が削除されることがあります。'],
+  ko:['미리 체험판 다운로드','APK 설치 안내','개발자가 서명한 APK 버전 1.0.8 (9)이며 Android 7.0 이상을 지원합니다. 브라우저의 앱 설치 권한을 요청할 수 있습니다. Google Play 버전과 패키지는 같지만 서명이 다르면 업데이트할 수 없습니다. 이 경우 Play 버전을 유지하고 업데이트를 기다려 주세요. 앱을 삭제하면 로컬 기록과 설정이 지워질 수 있습니다.'],
+  fr:['Télécharger en avant-première','Installation de l’APK','APK signé par le développeur, version 1.0.8 (9), pour Android 7.0 ou ultérieur. Android peut demander d’autoriser les installations depuis le navigateur. Le nom de package est celui de Google Play, mais une signature différente peut empêcher la mise à jour. Dans ce cas, conservez la version Play et attendez sa mise à jour : une désinstallation peut effacer l’historique et les réglages locaux.'],
+  de:['Vorabversion herunterladen','Hinweise zur APK-Installation','Vom Entwickler signierte APK, Version 1.0.8 (9), für Android ab 7.0. Android kann eine Installationsfreigabe für den Browser verlangen. Der Paketname entspricht der Play-Version, doch unterschiedliche Signaturen können ein Update verhindern. Behalten Sie dann die Play-Version und warten Sie auf das Update: Eine Deinstallation kann lokale Verlaufsdaten und Einstellungen löschen.'],
+  es:['Descargar acceso anticipado','Instalación del APK','APK firmado por el desarrollador, versión 1.0.8 (9), para Android 7.0 o posterior. Android puede pedir permiso para instalar desde el navegador. Usa el mismo paquete que Google Play, pero una firma diferente puede impedir la actualización. En ese caso, conserva la versión de Play y espera su actualización: desinstalar puede borrar el historial y los ajustes locales.'],
+  'pt-BR':['Baixar acesso antecipado','Instalação do APK','APK assinado pelo desenvolvedor, versão 1.0.8 (9), para Android 7.0 ou superior. O Android pode pedir permissão para instalar pelo navegador. O pacote é o mesmo do Google Play, mas assinaturas diferentes podem impedir a atualização. Nesse caso, mantenha a versão da Play e aguarde a atualização: desinstalar pode apagar o histórico e as configurações locais.']
+};
+window.studioKeys.push(...downloadKeys);
+for(const [language,values]of Object.entries(downloadCopy))window.studioCopy[language].push(...values);

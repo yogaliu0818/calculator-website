@@ -109,6 +109,7 @@
   });
   document.querySelectorAll('[data-theme]').forEach(button=>button.addEventListener('click',()=>{theme=button.dataset.theme;updateAppearance();}));
   document.querySelector('#glass-toggle').addEventListener('change',updateAppearance);language.addEventListener('change',()=>setLanguage(language.value,true));
+  document.querySelector('[data-install-notes]').addEventListener('click',()=>{document.querySelector('#apk-install').open=true;});
   const motion=matchMedia('(prefers-reduced-motion:reduce)'),portrait=matchMedia('(max-width:700px) and (orientation:portrait)');
   const heroImage=document.querySelector('#hero-image'),heroSource=document.querySelector('[data-demo-source]'),toggle=document.querySelector('#demo-toggle');
   const frames=['select','correct','result'],equations=['245 × 1.08','250 × 1.08','250 × 1.08 = 270'];

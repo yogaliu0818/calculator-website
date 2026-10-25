@@ -13,6 +13,11 @@ The Android App is maintained separately in `../apple_calculator_apk/www`.
 - `index.html`: single-product hero, three-step expression-editing story,
   feature tabs, dedicated scientific/conversion/Explore sections, three-theme material close-up, tablet showcase,
   native FAQ disclosures, complete footer and Play download links.
+- `downloads/`: the verified, developer-signed 1.0.8/code-9 release APK and its
+  SHA-256 file. Never publish debug APKs, signing keys or keystore properties.
+  The hero offers early-access APK on the left and Google Play on the right;
+  narrow phones stack the links. The installation note warns about possible
+  Play App Signing incompatibility and local-data loss on uninstall.
 - `style.css`: light editorial sections and a dark material showcase. Keep
   sections unframed, screenshots proportional and mobile text unclipped.
 - `translations.js`: shared existing catalogs plus explicit nine-language
@@ -45,6 +50,7 @@ node verify.cjs
 node audit-responsive-media.cjs
 node audit-language-detection.cjs
 node audit-proof.cjs
+node audit-downloads.cjs
 ```
 
 `capture.cjs` serves the App temporarily, captures 13 views per language and
@@ -87,3 +93,6 @@ After verification, commit/push only this website repository. Confirm deployed
 HTML and assets match the commit before calling the public update complete.
 `node verify-live.cjs` checks normalized source hashes, sampled image hashes and
 automatic/manual language selection on the existing public GitHub Pages site.
+It also verifies the published APK hash. `audit-downloads.cjs` runs an isolated
+local server and verifies real browser downloads, names/hashes, CTA placement,
+nine-language installation notes and seven viewport sizes, then closes it.

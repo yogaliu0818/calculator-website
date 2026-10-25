@@ -128,3 +128,23 @@
 - Published implementation db47ea4; Pages workflow 40182367388 succeeded. Public
   source/image hashes match and all 76 live browser checks passed. No Android
   binary, app version or native feature was changed by this website update.
+
+## 2026-10-25: Direct Early-Access APK Download
+
+- User approved a left-hand early-access APK download beside the right-hand
+  Google Play link. At widths <=480px the links stack without clipping.
+- Latest signed release is 1.0.8/code 9, production package
+  com.yogaliu.minimalcalculator, min/target SDK 24/36. Reverified APK Signature
+  Scheme v2; signing certificate SHA-256 is
+  870d138830d19269e3d7fde2a1aecc7c7571c3440707d8ffae030e5de79b0594.
+- All 50 packaged public assets match current App source. Published APK hash:
+  3D9AC62AAA53B64AF48E80B3FDCC418807DB17FAF2570C23092BBB4B10F550E4.
+  It is the existing 3,379,826-byte release, not a debug APK or a new build.
+- The Play distribution certificate has not been inspected; do not promise
+  overlay updates. Nine-language installation notes say to keep the Play app
+  and wait if signing conflicts occur, not uninstall and lose local history.
+- Hero links directly to downloads/calculator-1.0.8-v9.apk; checksum text is beside
+  it. Installation notes expand from the hero anchor. No key/secret is uploaded.
+- Tests passed: 401 download assertions including seven actual browser downloads
+  and hash comparison, 5953 existing regression checks, 1638 media checks.
+  Phone/desktop hero screenshots inspected. Cache version is 20261025e.
