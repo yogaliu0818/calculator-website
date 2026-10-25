@@ -95,3 +95,33 @@
 - Implementation 9ec7840 deployed successfully in Pages workflow 40180799239.
   Live verification passed 60 checks; normalized text-source hashes and exact
   sampled PNG hashes match. Public language detection/manual persistence tested.
+
+## 2026-10-25: Real Product Demonstration And Compact Mobile Proof
+
+- User approved the improvement recommendations. The hero now cycles through
+  actual 245 selection, correction to 250 and 250 x 1.08 = 270, about six seconds.
+  Reuses the App's real handlers only during isolated screenshot capture; the
+  website does not embed or duplicate the calculator engine.
+- Animation has manual pause/step buttons and stops offscreen, in background
+  tabs, during a full-screen image dialog and under reduced-motion preferences.
+  Capture frames are WebP quality 88, reducing 24.17 MB of source PNGs to 2.94 MB
+  across all nine locales and both orientations. A visitor loads only their
+  language/orientation frames; other full-screen images remain lazy.
+- Mobile story, conversion, Explore and feature-tab previews use intentional
+  detail captures rather than long shrunk screenshots. A native dialog shows
+  the matching complete image, traps focus, supports Escape and restores focus
+  and page scrolling when closed. Never use clip masks on the hero product.
+- Added actual 180 cm -> 1.8 m and area 100 -> radius approximately 5.6419 cases.
+  Case numbers, dates, labels and accessibility text follow the selected locale.
+  Editorial catalog now has 50 strings in all nine locales.
+- Download assurance is beside the primary CTA. Version highlights reference
+  local 1.0.8 release notes, prepared 2026-10-24, not a verified Play release date.
+- capture-proof.cjs is the last capture step because older scripts contain old
+  examples. Tests ignore the intentionally unloaded closed-dialog image and wait
+  for the asynchronous hero's decoded frame before measuring its painted bounds.
+- QA caught insufficient hero space in short landscape; compact only the copy
+  in that orientation so the complete scientific keypad remains visible.
+- Final browser suites passed: 5710 existing regression assertions, 1895 new
+  product-proof assertions, 1638 painted-media assertions and 116 automatic
+  language assertions. Phone hero/dialog and phone/tablet feature sections were
+  visually inspected. Cache suffix for this candidate is 20261025d.

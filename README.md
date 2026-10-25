@@ -26,6 +26,10 @@ The Android App is maintained separately in `../apple_calculator_apk/www`.
   First-visit language follows browser preferences, not IP geolocation. A manual
   language choice takes priority and is persisted; automatic selection is not.
   Unsupported preferences fall back to English. No geolocation service is called.
+  The six-second hero sequence uses three real screenshots, not a second engine.
+  It pauses offscreen, in background tabs, while a full-screen preview is open,
+  and under reduced-motion preferences. Manual pause and frame selection remain.
+  Native dialog previews retain keyboard focus and restore scrolling on close.
 - `assets/<locale>/`: actual renders of the current App, not generated concepts.
   `calculator`/`smoked`/`pearl` are glass-off; the `*-glass` variants are glass-on.
   Keep UI text and hit targets unaltered in these renders.
@@ -40,6 +44,7 @@ node capture.cjs
 node verify.cjs
 node audit-responsive-media.cjs
 node audit-language-detection.cjs
+node audit-proof.cjs
 ```
 
 `capture.cjs` serves the App temporarily, captures 13 views per language and
@@ -57,6 +62,16 @@ object-fit containment; never mask screenshot content or use negative offsets to
 fit it. The media audit checks actual painted image bounds, not only containers,
 at 14 viewport sizes and 1.25x pixel density. The language audit covers region and
 script variants, ordered preferences, manual persistence and blocked storage.
+
+`node capture-proof.cjs` captures real selected-number/correction/result frames
+in portrait and landscape, compact mobile details, 180 cm -> 1.8 m conversion,
+and circle reverse solving (area 100 -> radius approximately 5.6419). Hero frames
+use WebP quality 88; PNG detail/full-screen pairs retain the same App state.
+Run it after the older capture scripts; those scripts contain earlier examples.
+`audit-proof.cjs` checks all frames, localized dialogs, Escape/focus restoration,
+manual pause, offscreen suspension and reduced-motion changes. Version highlights
+come from the local 1.0.8 release notes and preparation date, not an assumed Play
+publication date. Android source and native packages are not modified.
 
 `verify.cjs` checks nine phone/tablet/desktop viewports, nine languages, all
 feature tabs, all six theme/glass combinations, image decoding, localized alt

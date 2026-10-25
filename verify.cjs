@@ -7,7 +7,7 @@ const output=path.resolve(__dirname,'../apple_calculator_apk/test-artifacts/webs
   fs.mkdirSync(output,{recursive:true});
   const browser=await chromium.launch({channel:'msedge',headless:true});let checks=0;
   const locales=['en','zh-Hant','zh-Hans','ja','ko','fr','de','es','pt-BR'];
-  async function decoded(page){await page.evaluate(async()=>{for(const img of document.images){img.loading='eager';await img.decode();}await Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})));});}
+  async function decoded(page){await page.waitForFunction(()=>document.querySelector('#hero-image').dataset.ready==='true');await page.evaluate(async()=>{for(const img of document.images){if(!img.hasAttribute('src'))continue;img.loading='eager';await img.decode();}await Promise.all(document.getAnimations().map(animation=>animation.finished.catch(()=>{})));});}
   try{
     for(const [width,height]of [[320,568],[390,844],[600,960],[960,600],[800,1280],[1280,800],[1440,900],[1920,1080],[852,393]]){
       const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce'}),errors=[];
@@ -22,7 +22,7 @@ const output=path.resolve(__dirname,'../apple_calculator_apk/test-artifacts/webs
             empty:[...document.querySelectorAll('[data-copy]')].some(e=>!e.textContent.trim()||e.textContent==='undefined'),
             wrong:[...document.querySelectorAll('img[data-shot]')].some(e=>!e.src.includes('/'+document.documentElement.lang+'/')),
             headerOverlap:brand.right>nav.left,heroOverlap:copy.bottom>image.top+1,heroVisible:image.top<hero.bottom,
-            title:document.title,allLoaded:[...document.images].every(e=>e.naturalWidth>0),
+            title:document.title,allLoaded:[...document.images].every(e=>!e.hasAttribute('src')||e.naturalWidth>0),
             textOverflow:[...document.querySelectorAll('button,a,select')].filter(e=>e.getClientRects().length).some(e=>e.scrollWidth>e.clientWidth+2),
             heroBottom:hero.bottom,copyBottom:copy.bottom,titleOneLine:r(document.querySelector('h1')).height<=parseFloat(getComputedStyle(document.querySelector('h1')).lineHeight)+1};
         });

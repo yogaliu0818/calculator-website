@@ -181,3 +181,18 @@ const sectionCopy={
 };
 window.studioKeys.push(...sectionKeys);
 for(const [language,values]of Object.entries(sectionCopy))window.studioCopy[language].push(...values);
+
+const proofKeys=['Calculation preview','Pause preview','Play preview','Change the number.','View full screen','Close','Screen preview','180 cm becomes 1.8 m.','Find the radius from an area of 100.','Version highlights','Release prepared','Portrait scientific mode, without losing landscape.','Refined glass and swipe-to-expand history.','More precise comparisons and improved phone and tablet layouts.','Free. No ads. No subscriptions. No account.'];
+const proofCopy={
+  en:[...proofKeys],
+  'zh-Hant':['計算操作展示','暫停展示','播放展示','修改數字。','查看完整畫面','關閉','完整畫面','180 公分，換成 1.8 公尺。','知道面積是 100，反求圓的半徑。','版本重點','版本準備日期','直向也有科學模式，橫向功能照常保留。','細緻玻璃外觀，歷史紀錄上滑即可展開。','改善比較計算精度與手機、平板排版。','免費、無廣告、無訂閱，免帳號。'],
+  'zh-Hans':['计算操作演示','暂停演示','播放演示','修改数字。','查看完整界面','关闭','完整界面','180 厘米，换成 1.8 米。','已知面积为 100，反求圆的半径。','版本亮点','版本准备日期','竖屏也有科学模式，横屏功能照常保留。','细腻玻璃外观，上滑展开历史记录。','改善比较计算精度和手机、平板布局。','免费、无广告、无订阅，无需账号。'],
+  ja:['計算の操作例','再生を一時停止','操作例を再生','数字を修正。','画面全体を見る','閉じる','画面全体','180 cm を 1.8 m に。','面積 100 から円の半径を求めます。','バージョンの主な変更','リリース準備日','横向きはそのまま、縦向きにも関数電卓。','ガラス表現を改良。履歴は上にスワイプで展開。','条件比較の精度とスマートフォン・タブレットの表示を改善。','無料。広告・サブスクなし。アカウント不要。'],
+  ko:['계산 과정 미리보기','미리보기 일시 정지','미리보기 재생','숫자를 수정하세요.','전체 화면 보기','닫기','전체 화면','180 cm를 1.8 m로 변환.','넓이 100으로 원의 반지름을 구하세요.','버전 주요 변경','출시 준비일','가로 모드는 그대로, 세로 화면에서도 공학용 계산.','개선된 유리 효과와 위로 밀어 펼치는 계산 기록.','비교 계산 정밀도와 휴대전화·태블릿 레이아웃 개선.','무료. 광고·구독 없음. 계정 불필요.'],
+  fr:['Aperçu du calcul','Mettre en pause','Lire l’aperçu','Modifiez le nombre.','Voir l’écran complet','Fermer','Écran complet','180 cm deviennent 1,8 m.','Retrouvez le rayon à partir d’une aire de 100.','Points forts de la version','Version préparée le','Mode scientifique en portrait, sans perdre le paysage.','Verre affiné et historique extensible d’un balayage.','Comparaisons plus précises et mise en page améliorée sur téléphone et tablette.','Gratuit. Sans publicité, abonnement ni compte.'],
+  de:['Berechnungsvorschau','Vorschau pausieren','Vorschau abspielen','Zahl ändern.','Vollständigen Bildschirm ansehen','Schließen','Vollständiger Bildschirm','180 cm werden zu 1,8 m.','Den Radius aus einer Fläche von 100 berechnen.','Neues in dieser Version','Version vorbereitet am','Wissenschaftlicher Hochformatmodus, weiterhin auch im Querformat.','Verfeinertes Glas und per Wischen erweiterbarer Verlauf.','Präzisere Vergleiche und verbesserte Smartphone- und Tablet-Layouts.','Kostenlos. Ohne Werbung, Abo oder Konto.'],
+  es:['Vista previa del cálculo','Pausar vista previa','Reproducir vista previa','Cambia el número.','Ver pantalla completa','Cerrar','Pantalla completa','180 cm se convierten en 1,8 m.','Encuentra el radio a partir de un área de 100.','Novedades de la versión','Versión preparada el','Modo científico vertical, conservando el horizontal.','Vidrio mejorado e historial ampliable al deslizar.','Comparaciones más precisas y mejores diseños para móviles y tabletas.','Gratis. Sin anuncios, suscripciones ni cuenta.'],
+  'pt-BR':['Prévia do cálculo','Pausar prévia','Reproduzir prévia','Altere o número.','Ver tela completa','Fechar','Tela completa','180 cm viram 1,8 m.','Encontre o raio a partir de uma área de 100.','Destaques da versão','Versão preparada em','Modo científico na vertical, mantendo o modo horizontal.','Vidro refinado e histórico que se expande ao deslizar.','Comparações mais precisas e layouts melhores em celulares e tablets.','Grátis. Sem anúncios, assinaturas ou conta.']
+};
+window.studioKeys.push(...proofKeys);
+for(const [language,values]of Object.entries(proofCopy))window.studioCopy[language].push(...values);

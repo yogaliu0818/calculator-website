@@ -12,7 +12,8 @@ const sizes=[[320,568],[360,640],[390,844],[640,600],[700,640],[701,640],[720,64
       await page.goto(pathToFileURL(path.join(__dirname,'index.html')).href);
       for(const lang of ['en','zh-Hant','zh-Hans','ja','ko','fr','de','es','pt-BR']){
         await page.selectOption('#language',lang);
-        await page.evaluate(async()=>{for(const img of document.images){img.loading='eager';await img.decode();}});
+        await page.waitForFunction(()=>document.querySelector('#hero-image').dataset.ready==='true');
+        await page.evaluate(async()=>{for(const img of document.images){if(!img.hasAttribute('src'))continue;img.loading='eager';try{await img.decode();}catch{throw Error('Cannot decode '+img.currentSrc);}}});
         const result=await page.evaluate(()=>{
           const box=e=>{const r=e.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
           const img=document.querySelector('.hero-center'),stage=document.querySelector('.hero-stage');

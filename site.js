@@ -23,6 +23,7 @@
   function fitHeadings(){
     // Fit the longest word, not the viewport; translated names must not split.
     document.querySelectorAll('h1,h2,h3').forEach(element=>{
+      if(!element.clientWidth)return;
       element.style.fontSize='';const style=getComputedStyle(element);
       textMeasure.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
       const words=element.tagName==='H1'?[element.textContent]
@@ -36,7 +37,8 @@
   function updateText(){document.querySelectorAll('[data-copy]').forEach(element=>{element.textContent=translate(element.dataset.copy);});fitHeadings();}
   function updateImages(){
     document.querySelectorAll('img[data-shot]').forEach(img=>{
-      const next=`assets/${current}/${img.dataset.shot}.png?v=20261025c`;
+      const shot=img.id==='feature-image'?{calculator:'story-result',history:'story-history',explore:'explore-detail',converters:'conversion-detail'}[img.dataset.shot]:img.dataset.shot;
+      const next=`assets/${current}/${shot}.png?v=20261025d`;
       if(img.getAttribute('src')!==next){
         img.classList.remove('shot-changing');
         img.onload=()=>{img.classList.remove('shot-changing');requestAnimationFrame(()=>img.classList.add('shot-changing'));};
@@ -47,7 +49,11 @@
         img.alt=translate(names[img.dataset.shot]||(img.dataset.shot.includes('-keys')?'Appearance':features[img.dataset.shot]?.[0])||'Calculator');
       }
     });
-    document.querySelectorAll('source[data-source-shot]').forEach(source=>{source.srcset=`assets/${current}/${source.dataset.sourceShot}.png?v=20261025c`;});
+    document.querySelectorAll('source[data-detail-for]').forEach(source=>{
+      const img=document.getElementById(source.dataset.detailFor),shot=img.dataset.shot;
+      const detail=img.id==='feature-image'?{calculator:'story-result-detail',history:'story-history-detail',explore:'explore-focus',converters:'conversion-focus'}[shot]:shot.startsWith('story-')?shot+'-detail':shot.replace('-detail','-focus');
+      source.srcset=`assets/${current}/${detail}.png?v=20261025d`;
+    });
   }
   function setLanguage(value,persist=false){
     current=value==='zh'?'zh-Hant':Object.hasOwn(languages,value)?value:'en';document.documentElement.lang=current;updateText();updateImages();language.value=current;
@@ -56,6 +62,14 @@
     document.querySelector('meta[property="og:image"]').content=`https://yogaliu0818.github.io/calculator-website/assets/${current}/scientific-glass.png`;
     language.setAttribute('aria-label',translate('Language'));document.querySelectorAll('nav,.product-facts').forEach(e=>e.setAttribute('aria-label',translate('Calculator')));
     document.querySelectorAll('[role="tablist"]').forEach(e=>e.setAttribute('aria-label',translate('Features')));document.querySelector('.theme-options').setAttribute('aria-label',translate('Appearance'));
+    document.querySelector('.release time').textContent=new Intl.DateTimeFormat(current,{dateStyle:'long',timeZone:'UTC'}).format(new Date('2026-10-24T12:00:00Z'));
+    const number=new Intl.NumberFormat(current,{maximumFractionDigits:4});
+    document.querySelector('#conversion .case-example strong').innerHTML=`180 <small>cm</small><span>→</span>${number.format(1.8)} <small>m</small>`;
+    document.querySelector('#explore .case-example strong').innerHTML=`A = 100<span>→</span>r ≈ ${number.format(5.6419)}`;
+    document.querySelector('.demo-controls').setAttribute('aria-label',translate('Calculation preview'));
+    document.querySelectorAll('[data-demo-step]').forEach((button,i)=>button.setAttribute('aria-label',translate(['Select the number.','Change the number.','Keep the answer clear.'][i])));
+    const close=document.querySelector('#preview-close');close.title=translate('Close');close.setAttribute('aria-label',close.title);
+    demoStep=0;showDemoStep();
     if(persist)try{localStorage.setItem('site-language',current);}catch{}
   }
   function selectFeature(button,focus=false){
@@ -95,6 +109,58 @@
   });
   document.querySelectorAll('[data-theme]').forEach(button=>button.addEventListener('click',()=>{theme=button.dataset.theme;updateAppearance();}));
   document.querySelector('#glass-toggle').addEventListener('change',updateAppearance);language.addEventListener('change',()=>setLanguage(language.value,true));
+  const motion=matchMedia('(prefers-reduced-motion:reduce)'),portrait=matchMedia('(max-width:700px) and (orientation:portrait)');
+  const heroImage=document.querySelector('#hero-image'),heroSource=document.querySelector('[data-demo-source]'),toggle=document.querySelector('#demo-toggle');
+  const frames=['select','correct','result'],equations=['245 × 1.08','250 × 1.08','250 × 1.08 = 270'];
+  let demoStep=0,demoPaused=false,demoVisible=false,demoTimer=0,demoRequest=0;
+  const decodedFrames=new Map();
+  function preloadFrame(step){
+    const url=`assets/${current}/demo-${portrait.matches?'':'wide-'}${frames[step]}.webp?v=20261025d`;
+    if(!decodedFrames.has(url)){
+      const image=new Image();image.decoding='async';image.src=url;
+      decodedFrames.set(url,image.decode().catch(error=>{decodedFrames.delete(url);throw error;}));
+    }
+    return decodedFrames.get(url);
+  }
+  function updateDemoControl(){
+    const paused=demoPaused||motion.matches,label=translate(paused?'Play preview':'Pause preview');
+    toggle.title=label;toggle.setAttribute('aria-label',label);toggle.disabled=motion.matches;
+    toggle.querySelector('img').src=`assets/icons/${paused?'play':'pause'}.svg`;
+    document.querySelectorAll('[data-demo-step]').forEach((button,i)=>button.setAttribute('aria-pressed',String(i===demoStep)));
+  }
+  function scheduleDemo(){
+    clearTimeout(demoTimer);
+    if(!demoPaused&&!motion.matches&&demoVisible&&!document.hidden&&!document.querySelector('#screen-preview').open){
+      demoTimer=setTimeout(()=>{demoStep=(demoStep+1)%frames.length;showDemoStep();},2000);
+    }
+  }
+  async function showDemoStep(){
+    const request=++demoRequest;heroImage.dataset.ready='false';clearTimeout(demoTimer);updateDemoControl();
+    try{await preloadFrame(demoStep);}catch{if(request===demoRequest){demoPaused=true;updateDemoControl();}return;}
+    if(request!==demoRequest)return;
+    heroImage.src=`assets/${current}/demo-wide-${frames[demoStep]}.webp?v=20261025d`;
+    heroSource.srcset=`assets/${current}/demo-${frames[demoStep]}.webp?v=20261025d`;
+    heroImage.alt=translate(['Select the number.','Change the number.','Keep the answer clear.'][demoStep]);
+    document.querySelector('#demo-equation').textContent=equations[demoStep];
+    try{await heroImage.decode();}catch{return;}
+    if(request!==demoRequest)return;heroImage.dataset.ready='true';
+    if(!motion.matches&&demoVisible&&!demoPaused)preloadFrame((demoStep+1)%frames.length).catch(()=>{});
+    scheduleDemo();
+  }
+  toggle.addEventListener('click',()=>{demoPaused=!demoPaused;updateDemoControl();scheduleDemo();});
+  document.querySelectorAll('[data-demo-step]').forEach(button=>button.addEventListener('click',()=>{demoStep=Number(button.dataset.demoStep);showDemoStep();}));
+  new IntersectionObserver(entries=>{demoVisible=entries[0].isIntersecting;scheduleDemo();},{threshold:.15}).observe(document.querySelector('.hero-stage'));
+  document.addEventListener('visibilitychange',scheduleDemo);
+  motion.addEventListener('change',()=>{updateDemoControl();scheduleDemo();});
+  portrait.addEventListener('change',()=>showDemoStep());
+  const preview=document.querySelector('#screen-preview'),previewImage=document.querySelector('#preview-image');
+  document.querySelectorAll('[data-preview-target]').forEach(button=>button.addEventListener('click',()=>{
+    const image=document.getElementById(button.dataset.previewTarget);previewImage.src=image.src;previewImage.alt=image.alt;
+    preview.showModal();document.documentElement.classList.add('preview-open');clearTimeout(demoTimer);
+  }));
+  document.querySelector('#preview-close').addEventListener('click',()=>preview.close());
+  preview.addEventListener('click',event=>{if(event.target===preview){const box=preview.getBoundingClientRect();if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)preview.close();}});
+  preview.addEventListener('close',()=>{document.documentElement.classList.remove('preview-open');previewImage.removeAttribute('src');scheduleDemo();});
   function preferredLanguage(){
     for(const tag of navigator.languages?.length?navigator.languages:[navigator.language]){
       const normalized=String(tag||'').toLowerCase().replaceAll('_','-');
