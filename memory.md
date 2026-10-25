@@ -64,3 +64,9 @@
   languages after the responsive hero update. Native FAQ Enter toggling and
   matching localized picture sources were checked; final phone/tablet/desktop
   screenshots were visually inspected. No servers are left running.
+- Publication unblocked: noninteractive Git push succeeded for 8d592be; Pages
+  workflow 40179345241 completed successfully. Public HTML/CSS/JS and sampled
+  localized image SHA-256 hashes match local source. Live-browser checks passed
+  13 assertions without JS/HTTP errors. Extra breakpoint matrix passed 126.
+- Public URL now serves this studio redesign. Older authentication-blocked
+  entries above are historical, not the current publication status.
