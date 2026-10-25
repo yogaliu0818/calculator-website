@@ -18,14 +18,17 @@ const server = http.createServer((req,res) => {
       await page.addInitScript(()=>localStorage.setItem('calculator-language-selected-v1','1'));
       await page.goto(`http://127.0.0.1:${server.address().port}/`);
       await page.waitForFunction(()=>window.CalculatorExperience);
-      await page.evaluate(lang=>{changeLanguage(lang);saveHistory('1442 ÷ 8','180.25');saveHistory('125 + 75','200');openSettingsView();},lang);
+      await page.evaluate(lang=>{changeLanguage(lang);CalculatorExperience.setPortraitScientific(false);appSettings.liquidGlass=false;applyVisualSettings();resetAll();inputDigit('2');inputDigit('4');inputDigit('5');chooseOperator('multiply');inputDigit('1');inputDigit('.');inputDigit('0');inputDigit('8');performEquals();updateDisplay();saveHistory('1442 ÷ 8','180.25');saveHistory('125 + 75','200');openSettingsView();},lang);
       await page.evaluate(()=>document.querySelector('.ex-appearance').open=true);
       await page.locator('[data-accent="orange"]').click();
       await page.locator('button[data-theme="classic"]').click();
       await page.evaluate(()=>closeSettingsView());
       const out=path.join(__dirname,'assets',lang);fs.mkdirSync(out,{recursive:true});
-      async function shot(name,width=393,height=852){await page.setViewportSize({width,height});await page.waitForTimeout(160);await page.screenshot({path:path.join(out,name+'.png')});}
+      async function shot(name,width=393,height=852){await page.setViewportSize({width,height});await page.waitForTimeout(320);await page.screenshot({path:path.join(out,name+'.png')});}
       await shot('calculator');await shot('scientific',852,393);
+      await page.setViewportSize({width:393,height:852});
+      await page.evaluate(()=>CalculatorExperience.setPortraitScientific(true));await shot('portrait-scientific');
+      await page.evaluate(()=>CalculatorExperience.setPortraitScientific(false));
       await page.setViewportSize({width:393,height:852});
       await page.evaluate(()=>openHistorySheet());await shot('history');
       await page.evaluate(()=>{closeHistorySheet();CalculatorExperience.openExplore('');});await shot('explore');
@@ -39,7 +42,14 @@ const server = http.createServer((req,res) => {
       }
       await page.locator('button[data-theme="classic"]').click();await page.evaluate(()=>closeSettingsView());
       await shot('tablet-portrait',800,1280);await shot('tablet-landscape',1280,800);
-      console.log('Captured',lang,'9 screenshots');await page.close();
+      await page.setViewportSize({width:393,height:852});
+      for(const theme of ['classic','smoked','pearl']){
+        await page.evaluate(()=>{openSettingsView();document.querySelector('.ex-appearance').open=true;});
+        await page.locator(`button[data-theme="${theme}"]`).click();
+        await page.evaluate(()=>{closeSettingsView();appSettings.liquidGlass=true;applyVisualSettings();});
+        await shot(`${theme}-glass`);
+      }
+      console.log('Captured',lang,'13 screenshots');await page.close();
     }
   } finally {await browser.close();server.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;server.close();});
